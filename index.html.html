@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Playground</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+            transition: background-color 0.5s;
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+        
+        .magic-button {
+            background-color: #9c27b0;
+        }
+        
+        .magic-button:hover {
+            background-color: #7b1fa2;
+        }
+        
+        .gallery {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .gallery img {
+            scroll-snap-align: start;
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background-color: #ddd;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        
+        .tab.active {
+            background-color: #f1f1f1;
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        input {
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .error {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .success {
+            color: #4CAF50;
+        }
+        
+        .secret-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 100;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        .progress-bar {
+            height: 5px;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <h1>✨ Interactive Playground ✨</h1>
+    
+    <!-- Event Handling Section -->
+    <div class="section">
+        <h2>🎈 Event Handling</h2>
+        
+        <div class="progress-bar" id="progressBar"></div>
+        
+        <button id="clickMe">Click Me!</button>
+        <button id="magicButton" class="magic-button">Hover Over Me</button>
+        <button id="secretButton">Try Something Special...</button>
+        
+        <p>Press any key to see the magic: <span id="keyPressDisplay">______</span></p>
+    </div>
+    
+    <!-- Interactive Elements Section -->
+    <div class="section">
+        <h2>🎮 Interactive Elements</h2>
+        
+        <button id="colorChanger">Click to Change My Color</button>
+        
+        <h3>Image Gallery</h3>
+        <div class="gallery">
+            <img src="https://source.unsplash.com/random/300x200?nature" alt="Nature">
+            <img src="https://source.unsplash.com/random/300x200?city" alt="City">
+            <img src="https://source.unsplash.com/random/300x200?animal" alt="Animal">
+            <img src="https://source.unsplash.com/random/300x200?food" alt="Food">
+            <img src="https://source.unsplash.com/random/300x200?space" alt="Space">
+        </div>
+        
+        <h3>Tab System</h3>
+        <div class="tabs">
+            <div class="tab active" data-tab="tab1">Tab 1</div>
+            <div class="tab" data-tab="tab2">Tab 2</div>
+            <div class="tab" data-tab="tab3">Tab 3</div>
+        </div>
+        <div class="tab-content active" id="tab1">
+            <p>Welcome to Tab 1! Here's some content for you.</p>
+        </div>
+        <div class="tab-content" id="tab2">
+            <p>This is Tab 2. Different content here!</p>
+        </div>
+        <div class="tab-content" id="tab3">
+            <p>And finally, Tab 3 has its own special message.</p>
+        </div>
+    </div>
+    
+    <!-- Form Validation Section -->
+    <div class="section">
+        <h2>📋 Form Validation</h2>
+        
+        <form id="myForm">
+            <div class="form-group">
+                <label for="name">Name (required):</label>
+                <input type="text" id="name" placeholder="Your name">
+                <div class="error" id="nameError">Please enter your name</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="your@email.com">
+                <div class="error" id="emailError">Please enter a valid email</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password (min 8 characters):</label>
+                <input type="password" id="password" placeholder="Password">
+                <div class="error" id="passwordError">Password must be at least 8 characters</div>
+                <div class="progress-bar" id="passwordStrength"></div>
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    
+    <div class="secret-message" id="secretMessage">
+        <h2>✨ You Found the Secret! ✨</h2>
+        <p>Congratulations on discovering the hidden feature!</p>
+        <button onclick="hideSecretMessage()">Close</button>
+    </div>
+    
+    <script>
+        // Event Handling
+        document.getElementById('clickMe').addEventListener('click', function() {
+            this.textContent = "You Clicked Me!";
+            this.style.backgroundColor = "#ff6b6b";
+            createConfetti(this);
+        });
+        
+        document.getElementById('magicButton').addEventListener('mouseover', function() {
+            this.textContent = "You're Magical!";
+        });
+        
+        document.getElementById('magicButton').addEventListener('mouseout', function() {
+            this.textContent = "Hover Over Me";
+        });
+        
+        let pressTimer;
+        document.getElementById('secretButton').addEventListener('mousedown', function() {
+            pressTimer = window.setTimeout(function() {
+                document.getElementById('secretMessage').style.display = 'block';
+                createConfetti(document.getElementById('secretButton'));
+            }, 2000);
+        });
+        
+        document.getElementById('secretButton').addEventListener('mouseup', function() {
+            clearTimeout(pressTimer);
+        });
+        
+        document.getElementById('secretButton').addEventListener('dblclick', function() {
+            document.body.style.backgroundColor = getRandomColor();
+            createConfetti(this);
+        });
+        
+        document.addEventListener('keydown', function(event) {
+            document.getElementById('keyPressDisplay').textContent = `You pressed: ${event.key} (Code: ${event.code})`;
+        });
+        
+        // Interactive Elements
+        const colors = ['#4CAF50', '#2196F3', '#f44336', '#FF9800', '#9C27B0'];
+        document.getElementById('colorChanger').addEventListener('click', function() {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            this.style.backgroundColor = randomColor;
+            this.textContent = `Color Changed to ${randomColor}`;
+        });
+        
+        // Tab System
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Form Validation
+        const form = document.getElementById('myForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        
+        // Real-time validation
+        nameInput.addEventListener('input', function() {
+            validateName();
+        });
+        
+        emailInput.addEventListener('input', function() {
+            validateEmail();
+        });
+        
+        passwordInput.addEventListener('input', function() {
+            validatePassword();
+            updatePasswordStrength();
+        });
+        
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const isNameValid = validateName();
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            
+            if (isNameValid && isEmailValid && isPasswordValid) {
+                alert('Form submitted successfully!');
+                form.reset();
+                document.getElementById('passwordStrength').style.width = '0%';
+            } else {
+                alert('Please fix the errors before submitting.');
+            }
+        });
+        
+        function validateName() {
+            const nameError = document.getElementById('nameError');
+            if (nameInput.value.trim() === '') {
+                nameError.style.display = 'block';
+                return false;
+            } else {
+                nameError.style.display = 'none';
+                return true;
+            }
+        }
+        
+        function validateEmail() {
+            const emailError = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (emailInput.value.trim() === '') {
+                emailError.style.display = 'none';
+                return true;
+            } else if (!emailRegex.test(emailInput.value)) {
+                emailError.style.display = 'block';
+                return false;
+            } else {
+                emailError.style.display = 'none';
+                return true;
+            }
+        }
+        
+        function validatePassword() {
+            const passwordError = document.getElementById('passwordError');
+            if (passwordInput.value.length < 8 && passwordInput.value.length > 0) {
+                passwordError.style.display = 'block';
+                return false;
+            } else {
+                passwordError.style.display = 'none';
+                return true;
+            }
+        }
+        
+        function updatePasswordStrength() {
+            const strengthBar = document.getElementById('passwordStrength');
+            const length = passwordInput.value.length;
+            
+            if (length === 0) {
+                strengthBar.style.width = '0%';
+                strengthBar.style.backgroundColor = '#4CAF50';
+            } else if (length < 4) {
+                strengthBar.style.width = '25%';
+                strengthBar.style.backgroundColor = '#f44336';
+            } else if (length < 8) {
+                strengthBar.style.width = '50%';
+                strengthBar.style.backgroundColor = '#FF9800';
+            } else {
+                strengthBar.style.width = '100%';
+                strengthBar.style.backgroundColor = '#4CAF50';
+            }
+        }
+        
+        // Secret message
+        function hideSecretMessage() {
+            document.getElementById('secretMessage').style.display = 'none';
+        }
+        
+        // Confetti effect
+        function createConfetti(element) {
+            const rect = element.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${x}px`;
+                confetti.style.top = `${y}px`;
+                confetti.style.backgroundColor = getRandomColor();
+                
+                document.body.appendChild(confetti);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 2 + Math.random() * 3;
+                const xVelocity = Math.cos(angle) * velocity;
+                const yVelocity = Math.sin(angle) * velocity;
+                
+                let posX = x;
+                let posY = y;
+                let opacity = 1;
+                
+                const animate = () => {
+                    posX += xVelocity;
+                    posY += yVelocity + 0.1; // Add gravity
+                    opacity -= 0.02;
+                    
+                    confetti.style.left = `${posX}px`;
+                    confetti.style.top = `${posY}px`;
+                    confetti.style.opacity = opacity;
+                    
+                    if (opacity > 0) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        confetti.remove();
+                    }
+                };
+                
+                requestAnimationFrame(animate);
+            }
+        }
+        
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+        // Progress bar on scroll
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollProgress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = scrollProgress + '%';
+        });
+    </script>
+</body>
+</html>
