@@ -1,0 +1,242 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript Playground</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Welcome to the JavaScript Playground 🎉</h1>
+
+  <!-- Event Handling -->
+  <div class="section">
+    <button id="clickMe">Click Me</button>
+    <div id="hoverMe" class="hover-box">Hover Over Me</div>
+    <input type="text" id="keypressInput" placeholder="Type something..." />
+    <button id="secretButton">Double Click Me!</button>
+  </div>
+
+  <!-- Interactive Elements -->
+  <div class="section">
+    <button id="changeText">Change My Text</button>
+
+    <div class="gallery">
+      <img id="mainImage" src="https://via.placeholder.com/400x200?text=Image+1" alt="Gallery Image" />
+      <div class="thumbnails">
+        <img class="thumb" src="https://via.placeholder.com/100x50?text=1" data-src="https://via.placeholder.com/400x200?text=Image+1" alt="Thumb 1" />
+        <img class="thumb" src="https://via.placeholder.com/100x50?text=2" data-src="https://via.placeholder.com/400x200?text=Image+2" alt="Thumb 2" />
+        <img class="thumb" src="https://via.placeholder.com/100x50?text=3" data-src="https://via.placeholder.com/400x200?text=Image+3" alt="Thumb 3" />
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="1">Tab 1</button>
+        <button class="tab-btn" data-tab="2">Tab 2</button>
+        <button class="tab-btn" data-tab="3">Tab 3</button>
+      </div>
+      <div class="tab-content active" id="tab-1">Content for Tab 1</div>
+      <div class="tab-content" id="tab-2">Content for Tab 2</div>
+      <div class="tab-content" id="tab-3">Content for Tab 3</div>
+    </div>
+  </div>
+
+  <!-- Form Validation -->
+  <div class="section">
+    <form id="myForm" novalidate>
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password (min 8 chars)" required />
+      <span id="feedback"></span>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+/* style.css */
+body {
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: #f0f0f0;
+  padding: 2rem;
+}
+.section {
+  margin-bottom: 2rem;
+}
+button {
+  background: #1e1e1e;
+  border: 2px solid #333;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+button:hover {
+  background: #333;
+}
+.hover-box {
+  display: inline-block;
+  padding: 1rem;
+  margin-left: 1rem;
+  border: 2px dashed #555;
+  transition: border-color 0.3s;
+}
+.hover-box.hovered {
+  border-color: #f39c12;
+}
+.gallery {
+  margin-top: 1rem;
+}
+.thumbnails {
+  margin-top: 0.5rem;
+}
+.thumb {
+  cursor: pointer;
+  opacity: 0.7;
+  margin-right: 0.5rem;
+  transition: opacity 0.3s;
+}
+.thumb.active,
+.thumb:hover {
+  opacity: 1;
+}
+.tabs {
+  margin-top: 1rem;
+}
+.tab-buttons {
+  margin-bottom: 0.5rem;
+}
+.tab-btn {
+  background: #1e1e1e;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+.tab-btn.active {
+  background: #f39c12;
+  color: #121212;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  background: #1e1e1e;
+  border: 1px solid #333;
+}
+.tab-content.active {
+  display: block;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+}
+input {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #555;
+  background: #1e1e1e;
+  color: #f0f0f0;
+}
+#feedback {
+  min-height: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #e74c3c;
+}
+
+// script.js
+// Event Handling
+const clickMeBtn = document.getElementById('clickMe');
+clickMeBtn.addEventListener('click', () => {
+  alert('Button clicked! ⚡');
+});
+
+const hoverBox = document.getElementById('hoverMe');
+hoverBox.addEventListener('mouseover', () => {
+  hoverBox.classList.add('hovered');
+});
+hoverBox.addEventListener('mouseout', () => {
+  hoverBox.classList.remove('hovered');
+});
+
+const keypressInput = document.getElementById('keypressInput');
+keypressInput.addEventListener('keypress', (e) => {
+  console.log(`Key pressed: ${e.key}`);
+});
+
+const secretBtn = document.getElementById('secretButton');
+secretBtn.addEventListener('dblclick', () => {
+  secretBtn.textContent = 'You found the secret! 🔮';
+});
+
+// Interactive Elements
+const changeTextBtn = document.getElementById('changeText');
+changeTextBtn.addEventListener('click', () => {
+  changeTextBtn.textContent = changeTextBtn.textContent === 'Change My Text' ? 'Text Changed!' : 'Change My Text';
+});
+
+const mainImage = document.getElementById('mainImage');
+document.querySelectorAll('.thumb').forEach(thumb => {
+  thumb.addEventListener('click', () => {
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+    mainImage.src = thumb.getAttribute('data-src');
+  });
+});
+
+// Tabs
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelector('.tab-btn.active').classList.remove('active');
+    btn.classList.add('active');
+
+    document.querySelector('.tab-content.active').classList.remove('active');
+    document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+  });
+});
+
+// Form Validation
+const form = document.getElementById('myForm');
+const feedback = document.getElementById('feedback');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  feedback.textContent = '';
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (!name || !email || !password) {
+    feedback.textContent = 'All fields are required.';
+    return;
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    feedback.textContent = 'Please enter a valid email address.';
+    return;
+  }
+
+  if (password.length < 8) {
+    feedback.textContent = 'Password must be at least 8 characters long.';
+    return;
+  }
+
+  alert('Form submitted successfully! 🎉');
+  form.reset();
+});
+
+// Live feedback
+['name', 'email', 'password'].forEach(id => {
+  const input = document.getElementById(id);
+  input.addEventListener('input', () => {
+    feedback.textContent = '';
+  });
+});
